@@ -1,6 +1,6 @@
 baseurl = "http://hugo.spf13.com/"
 languageCode = "en-us"
-title = "Hugo Future Imperfect"
+title = "Michael Groesbeck"
 theme = "hugo-future-imperfect"
 preserveTaxonomyNames = true
 paginate = 3
@@ -11,7 +11,7 @@ googleAnalytics = ""
     # Sets the meta tag description, usually reserved for the main page
     description          = "HTML5 UP theme, Future Imperfect with some extra goodies, ported by Julio Pescador. Powered by Hugo"
     # This will appear on the top left of the navigation bar
-    navbarTitle          = "Future Imperfect"
+    navbarTitle          = "Michael Groesbeck"
     # Social media buttons that appear on the sidebar
     socialAppearAtTop    = true
     socialAppearAtBottom = true
@@ -41,11 +41,11 @@ googleAnalytics = ""
 # parms.intro will appear on the sidebar
 # This is optional, but it's suggested to use
 [params.intro]
-    header    = "Hugo Future Imperfect"
+    header    = "Michael Groesbeck"
 
-    paragraph = "Another fine responsive site template by <a href=\"http://html5up.net\">HTML5 UP</a>. Ported by Julio Pescador with some extra goodies <i class='fa fa-hand-peace-o'></i>"
+    paragraph = "A website to display my projects (update)"
 
-    about     = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent tellus lacus, auctor vehicula molestie quis, tempor quis velit. Quisque in quam ac leo efficitur vulputate. Phasellus ullamcorper aliquam sodales. Maecenas sit amet condimentum ipsum. Proin sit amet ligula elit. Mauris."
+    about     = "Ito ay aking bagong website. Tingnan mo, astig 'no?"
 
 # This will also appear on the sidebar.
 # A width of less than 100px is recommended
@@ -86,7 +86,7 @@ googleAnalytics = ""
 # socialAppearAtTop or socialAppearAtBottom is set to true in the params area
 # The social media icons will appear on the sidebar
 [social]
-    github          = "jpescador"
+    github          = "mdgroesbeck"
     bitbucket       = ""
     jsfiddle        = ""
     codepen         = ""
@@ -112,5 +112,5 @@ googleAnalytics = ""
     facebook        = ""
     facebook_admin  = ""
     twitter_domain  = ""
-    twitter         = "julio_pescador"
-    email           = ""
+    twitter         = "mdgroesbeck"
+    email           = "mdgroesbeck@gmail.com"
