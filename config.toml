@@ -1,4 +1,4 @@
-baseurl = "http://hugo.spf13.com/"
+baseurl = "http://mdgbeck.netlify.com/"
 languageCode = "en-us"
 title = "Michael Groesbeck"
 theme = "hugo-future-imperfect"
@@ -86,7 +86,7 @@ googleAnalytics = ""
 # socialAppearAtTop or socialAppearAtBottom is set to true in the params area
 # The social media icons will appear on the sidebar
 [social]
-    github          = "mdgroesbeck"
+    github          = "mdgbeck"
     bitbucket       = ""
     jsfiddle        = ""
     codepen         = ""
@@ -112,5 +112,5 @@ googleAnalytics = ""
     facebook        = ""
     facebook_admin  = ""
     twitter_domain  = ""
-    twitter         = "mdgroesbeck"
-    email           = "mdgroesbeck@gmail.com"
+    twitter         = "mdgbeck"
+    email           = "mdgbeck@gmail.com"
