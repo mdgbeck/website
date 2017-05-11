@@ -56,7 +56,7 @@ googleAnalytics = ""
     # future imperfect's hexagonal shape
     circle    = true
     imperfect = true
-    width     = "75px"
+    width     = "100px"
     alt       = "Hugo Future Imperfect"
 
 # Adjust the amount of recent posts on the sidebar.
