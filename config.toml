@@ -11,12 +11,12 @@ googleAnalytics = ""
     # Sets the meta tag description, usually reserved for the main page
     description          = "HTML5 UP theme, Future Imperfect with some extra goodies, ported by Julio Pescador. Powered by Hugo"
     # This will appear on the top left of the navigation bar
-    navbarTitle          = "Michael Groesbeck"
+    navbarTitle          = "Michael D. Groesbeck"
     # Social media buttons that appear on the sidebar
     socialAppearAtTop    = true
     socialAppearAtBottom = true
     # set this to the section name if section is not post
-    viewMorePostLink     = "/post/"
+    viewMorePostLink     = "/posts/"
 
 # Optional Params
     categoriesByCount    = true
@@ -68,7 +68,7 @@ googleAnalytics = ""
 # You can use identifier to prepend a font awesome icon to your text
 [[menu.main]]
     name = "Posts"
-    url = "/post"
+    url = "/posts"
     identifier = "fa fa-newspaper-o"
     weight = 1
 
