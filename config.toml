@@ -16,7 +16,7 @@ googleAnalytics = ""
     socialAppearAtTop    = true
     socialAppearAtBottom = true
     # set this to the section name if section is not post
-    viewMorePostLink     = "/blog/"
+    viewMorePostLink     = "/post/"
 
 # Optional Params
     categoriesByCount    = true
@@ -67,8 +67,8 @@ googleAnalytics = ""
 # Set up your menu items in the navigation bar
 # You can use identifier to prepend a font awesome icon to your text
 [[menu.main]]
-    name = "Blog"
-    url = "/blog"
+    name = "Posts"
+    url = "/post"
     identifier = "fa fa-newspaper-o"
     weight = 1
 
