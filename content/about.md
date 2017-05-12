@@ -1,29 +1,15 @@
 +++
-title = "About Hugo"
-date = "2014-04-09"
+title = "About Me"
+date = "2017-05-12"
 +++
 
-Hugo is a static site engine written in Go.
+## About Me
 
+I am currently working as Head of Reporting and Analytics at [ActiveCare](http://www.activecare.com/) where I have been since June 2016. There I lead a small team handling our reports for our customers, do business analytics, as well as internal research based on medical data. I primarly do analyses using R, and use SQL Server Reporting Services (SSRS) for our external reports. I received a Bachelor's of Science in Statistics from Brigham Young University. My interests include data analytics, photography, basketball, and soccer. My wife and I currently live in Pleasant Grove, Utah with our two dogs.
 
-It makes use of a variety of open source projects including:
+![Theo](/img/main/theo.jpg)
 
-* [Cobra](https://github.com/spf13/cobra)
-* [Viper](https://github.com/spf13/viper)
-* [J Walter Weatherman](https://github.com/spf13/jWalterWeatherman)
-* [Cast](https://github.com/spf13/cast)
+Theo - Dutch Shepherd Mix
 
-Learn more and contribute on [GitHub](https://github.com/spf13).
-
-## Setup
-
-Some fun facts about [Hugo](http://gohugo.io/):
-
-* Built in [Go](http://golang.org/)
-* Loosely inspired by [Jekyll](http://jekyllrb.com/)
-* Primarily developed by [spf13](http://spf13.com/) on the train while commuting to and from Manhattan.
-* Coded in [Vim](http://vim.org) using [spf13-vim](http://vim.spf13.com/)
-
-Have questions or suggestions? Feel free to [open an issue on GitHub](https://github.com/spf13/hugo/issues/new) or [ask me on Twitter](https://twitter.com/spf13).
-
-Thanks for reading!
+![Bear](/img/main/bear.jpg)
+Bear - Belgian Malinois

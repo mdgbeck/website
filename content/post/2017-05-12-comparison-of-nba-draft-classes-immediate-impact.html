@@ -19,11 +19,11 @@ linktitle: ''
 
 
 
-<p>On a semi-recent episode of <a href="add_url.com">The Lowe Post</a>, Jeff Van Gundy asked- “Is this the worst [rookie class] as far as initial contribution? Has there ever been less contribution to winning?”</p>
+<p>On AAA semi-recent episode of <a href="http://www.espn.com/espnradio/play?id=19151345">The Lowe Post</a>, Jeff Van Gundy asked- “Is this the worst [rookie class] as far as initial contribution? Has there ever been less contribution to winning?” <a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a></p>
 <p>Curious to know the answer, I looked at each draft class since 1989 (when the draft was changed to two rounds) and their performance in that year’s season. To be clear, this is only looking at immediate contribution, and not long-term success. Only those who played the same year they were drafted are being considered- so players like Joel Embiid, who did not play their first year, are not in the data.</p>
 <div id="the-data" class="section level2">
 <h2>The Data</h2>
-<p>The data are all scraped from <a href="www.basketball-reference.com">basketball-reference.com</a> using the the <code>rvest</code> <a href="https://cran.r-project.org/web/packages/rvest/">package</a>. The function below pulls the necessary data for any one year. The first thing to grab is the the year’s <a href="http://www.basketball-reference.com/draft/NBA_2016.html">draft class</a>. The only necessary information from this is the link to each player’s page. This link is used as a unique identifier for the player, allowing us to easily merge with the other data. The other data necessary are found in the <a href="http://www.basketball-reference.com/leagues/NBA_2017_advanced.html">advanced season statistics page</a>. For the purposes of this analysis, the only stats needed are minutes played, and <a href="http://www.basketball-reference.com/about/ws.html">win shares</a> as these will work for measuring contribution to winning. The total number of minutes played, and total win shares by all players are computed as well to make it possible to compare across seasons. I then used the function to grab data from 1989 - 2016. The resulting data frame contains 1,204 observations, and can be found <a href="https://github.com/mdgbeck/data">here</a>.</p>
+<p>The data are all from <a href="www.basketball-reference.com">basketball-reference.com</a> scraped using the the <code>rvest</code> <a href="https://cran.r-project.org/web/packages/rvest/">package</a>. The function below pulls the necessary data for any one year. The first thing to grab is the year’s <a href="http://www.basketball-reference.com/draft/NBA_2016.html">draft class</a>. The only necessary information from this is the link to each player’s page. This link is used as a unique identifier for the player, allowing us to easily merge with the other data necessary, which are found on the <a href="http://www.basketball-reference.com/leagues/NBA_2017_advanced.html">advanced season statistics page</a>. For the purpose of this analysis, the only stats needed are minutes played, and <a href="http://www.basketball-reference.com/about/ws.html">win shares</a> as these will work for measuring contribution to winning. The total number of minutes played, and total win shares by all players are computed as well to make it possible to compare across seasons. I then used the function to grab data from 1989 - 2016. The resulting data frame contains 1,204 observations, and can be found <a href="https://github.com/mdgbeck/data">here</a>.</p>
 <pre class="r"><code>library(rvest)
 library(tidyverse)
 
@@ -73,6 +73,7 @@ get_draft_data &lt;- function(year){
   
 }
 
+# pull data 1989 - 2016
 nba &lt;- lapply(1989:2016, get_draft_data) %&gt;% 
   bind_rows()</code></pre>
 </div>
@@ -84,5 +85,12 @@ nba &lt;- lapply(1989:2016, get_draft_data) %&gt;%
 <p>The next statistic to consider is the number of win shares rookies contributed. Again we measure this as a percentage of total win shares each season.</p>
 <p><img src="/post/2017-05-12-comparison-of-nba-draft-classes-immediate-impact_files/figure-html/unnamed-chunk-4-1.png" width="768" /></p>
 <p>Again, we see that the 2014 draft class had the lowest percentage- less than 2% of all win shares came from rookies that year. Similarly, the 2016 had the second lowest at 2.10%.</p>
-<p>As we might expect, the percent of total win shares and percent of total minutes each year are highly correlated with each other (r = 0.87). I do not think this is a problem, as the question asked was about initial contribution not the talent of the rookies. From the graphics we begin to understand the answer to Van Gundy’s question, that while this years draft class may not have been the absolute worst, they were certainly among the lowest contributing rookie class in history.</p>
+<p>As we might expect, the percent of total win shares and percent of total minutes each year are highly correlated with each other (<em>r</em> = 0.87). I do not think this is a problem, as the question asked was about initial contribution not the talent of the rookies. Whether we consider minutes played or win shares a better measure of impact, both suggest that the 2014 draft may have been the least immediately impactful.</p>
+<p>To answer Van Gundy’s question, while this years draft class may not have been the absolute worst, they were certainly among the lowest contributing rookie class in history.</p>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>Around the 42 minute mark.<a href="#fnref1">↩</a></p></li>
+</ol>
 </div>
