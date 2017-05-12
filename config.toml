@@ -46,7 +46,7 @@ googleAnalytics = ""
 
     paragraph = "A website to display my projects"
 
-    about     = "My name is Michael Groesbeck, and this is my website where I will post the various data projects I work on."
+    about     = "My name is Michael Groesbeck, and this is where I will post the various data projects I work on."
 
 # This will also appear on the sidebar.
 # A width of less than 100px is recommended
