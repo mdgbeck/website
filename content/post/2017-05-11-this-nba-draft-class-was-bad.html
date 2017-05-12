@@ -1,0 +1,108 @@
+---
+title: This NBA Draft Class Was Bad
+author: Michael Groesbeck
+date: '2017-05-11'
+slug: this-nba-draft-class-was-bad
+categories:
+  - R
+tags:
+  - NBA
+  - R
+description: ''
+featured: ''
+featuredalt: ''
+featuredpath: ''
+linktitle: ''
+---
+
+
+
+<p>On a semi-recent episode of <a href="add_url.com">The Lowe Post</a>, Jeff Van Gundy, talking about his choice for Rookie of the Year, asked- “Is this the worst [rookie class] as far as initial contribution? Has there ever been less contribution to winning?”</p>
+<p>To answer these questions, I looked at each draft class since 1989 (when the draft was changed to two rounds) and their performance in that year’s season. To be clear, this is only looking at immediate contribution, and not long-term success. Only those who played the same year they were drafted are being considered- so players like Joel Embiid, who did not play their first year, are not in the data.</p>
+<div id="the-data" class="section level2">
+<h2>The Data</h2>
+<p>The data is from <a href="www.basketball-reference.com">basketball-reference.com</a>. First, a year’s <a href="http://www.basketball-reference.com/draft/NBA_2016.html">draft class</a> was pulled, then this was joined with that same season’s <a href="http://www.basketball-reference.com/leagues/NBA_2017_advanced.html">player statistics</a>. This was done for every year 1989 - 2016. The follwing script was used to scrape and prepare the data for analysis.</p>
+<pre class="r"><code>library(rvest)
+library(tidyverse)
+library(stringr)
+
+# function used to pull a single years data
+get_year_data &lt;- function(year){
+  
+  draft_url &lt;- paste0(&quot;http://www.basketball-reference.com/draft/NBA_&quot;, 
+                      year, &quot;.html&quot;)
+  
+  # return just the player name and pick
+  draft &lt;- read_html(draft_url) %&gt;% 
+    html_node(&quot;table&quot;) %&gt;% 
+    html_table(trim=TRUE, header=FALSE) %&gt;% 
+    filter(!is.na(as.numeric(X1))) %&gt;% 
+    select(Pick = X1, 
+           Player = X4)
+  
+  # 2016-17 season is under 2017 url so add one to year
+  stat_year &lt;- year + 1
+  
+  adv_stats_url &lt;- paste0(&quot;http://www.basketball-reference.com/leagues/NBA_&quot;, 
+                      stat_year, &quot;_advanced.html&quot;)
+  
+  adv_stats &lt;- read_html(adv_stats_url) %&gt;% 
+    html_node(&quot;table&quot;) %&gt;% 
+    html_table(trim=TRUE, header=TRUE)
+  
+  # remove asterisk from players name (indicates all-star?)
+  adv_stats$Player &lt;- str_replace_all(adv_stats$Player, &quot;\\*&quot;, &quot;&quot;)  
+  
+  tot_stats_url &lt;- paste0(&quot;http://www.basketball-reference.com/leagues/NBA_&quot;, 
+                      stat_year, &quot;_totals.html&quot;)
+  
+  tot_stats &lt;- read_html(tot_stats_url) %&gt;% 
+    html_node(&quot;table&quot;) %&gt;% 
+    html_table(trim=TRUE, header=TRUE) %&gt;% 
+    select(Player, TRB, AST, PTS) %&gt;%
+    mutate(Player = str_replace_all(Player, &quot;\\*&quot;, &quot;&quot;)) %&gt;% 
+    filter(!duplicated(Player))
+  
+  # get year, number of teams, and total minutes played that season
+  year_info &lt;- data_frame(
+    Year = year,
+    Teams = length(unique(adv_stats$Tm[!adv_stats$Tm %in% c(&quot;TOT&quot;, &quot;Tm&quot;)])),
+    Minutes = sum(as.numeric(adv_stats$MP[adv_stats$Tm != &quot;TOT&quot;]), na.rm=TRUE))
+  
+  inner_join(draft, adv_stats, by = &quot;Player&quot;) %&gt;% 
+    select(Pick, Player, Tm, Pos, G, MP, OWS, DWS, WS) %&gt;% 
+    inner_join(tot_stats, by = &quot;Player&quot;) %&gt;% 
+    mutate(
+      Pick = as.numeric(Pick), 
+      Player, 
+      Pos, 
+      G = as.numeric(G), 
+      TRB = as.numeric(TRB),
+      AST = as.numeric(AST),
+      PTS = as.numeric(PTS),
+      MP = as.numeric(MP), 
+      OWS = as.numeric(OWS), 
+      DWS = as.numeric(DWS), 
+      WS = as.numeric(WS),
+      Year = year) %&gt;% 
+    # removes the splits for players traded mid-year
+    filter(!duplicated(Player)) %&gt;% 
+    left_join(year_info, by=&quot;Year&quot;)
+}
+
+# get data from 1989 - 2016
+nba &lt;- lapply(1989:2016, get_year_data) %&gt;% 
+  bind_rows() %&gt;% 
+  # in 2015 a 2nd marcus thornton was drafted who did not play the next year
+  filter(Player != &quot;Marcus Thornton&quot; | Year != 2015) %&gt;% 
+  # in 2007 a 2nd marcus williams was drafted, this lists the others stats hard fix
+  filter(Player != &quot;Marcus Williams&quot; | Year != 2007) %&gt;% 
+  rbind(c(33, &quot;Marcus Williams&quot;, &quot;TOT&quot;, &quot;PF&quot;, 11, 36, -0.1, 0, -0.1, 12, 3, 10, 2007, 30, 594122))</code></pre>
+<p>The data results can be found <a href="https://github.com/">here</a>.</p>
+</div>
+<div id="analysis-and-results" class="section level2">
+<h2>Analysis and Results</h2>
+<p>The first thing that can be used as a measure of contribution is minutes played. In order to compare across seasons, we compute what percentage of minutes played in a season were by rookies.</p>
+<p><img src="/post/2017-05-11-this-nba-draft-class-was-bad_files/figure-html/unnamed-chunk-3-1.png" width="768" /><img src="/post/2017-05-11-this-nba-draft-class-was-bad_files/figure-html/unnamed-chunk-3-2.png" width="768" /></p>
+<p><em>test test</em></p>
+</div>
