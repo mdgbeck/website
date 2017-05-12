@@ -11,7 +11,7 @@ googleAnalytics = ""
     # Sets the meta tag description, usually reserved for the main page
     description          = "HTML5 UP theme, Future Imperfect with some extra goodies, ported by Julio Pescador. Powered by Hugo"
     # This will appear on the top left of the navigation bar
-    navbarTitle          = "Michael D. Groesbeck"
+    navbarTitle          = "Michael Groesbeck"
     # Social media buttons that appear on the sidebar
     socialAppearAtTop    = true
     socialAppearAtBottom = true
@@ -20,7 +20,7 @@ googleAnalytics = ""
 
 # Optional Params
     categoriesByCount    = true
-    includeReadingTime   = true
+    includeReadingTime   = false
     # The set of favicons used are based on the write-up from this link:
     # https://github.com/audreyr/favicon-cheat-sheet
     # Please see the favicon partial template for more information
@@ -41,7 +41,6 @@ googleAnalytics = ""
 # parms.intro will appear on the sidebar
 # This is optional, but it's suggested to use
 [params.intro]
-    header    = "Michael Groesbeck"
 
     paragraph = "A website to display my projects (update)"
 
