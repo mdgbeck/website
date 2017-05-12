@@ -22,7 +22,7 @@ linktitle: ''
 knitr::opts_chunk$set(message=FALSE, warnings=FALSE)
 ```
 
-On AAA semi-recent episode of [The Lowe Post](http://www.espn.com/espnradio/play?id=19151345), Jeff Van Gundy asked- "Is this the worst [rookie class] as far as initial contribution? Has there ever been less contribution to winning?" [^1] 
+On a semi-recent episode of [The Lowe Post](http://www.espn.com/espnradio/play?id=19151345), Jeff Van Gundy asked- "Is this the worst [rookie class] as far as initial contribution? Has there ever been less contribution to winning?" [^1] 
 
 [^1]: Around the 42 minute mark. 
 
