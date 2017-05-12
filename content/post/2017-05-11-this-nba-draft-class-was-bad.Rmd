@@ -1,5 +1,5 @@
 ---
-title: This NBA Draft Class Was Bad
+title: The 2016 NBA Draft Class Was Historically Bad
 author: Michael Groesbeck
 date: '2017-05-11'
 slug: this-nba-draft-class-was-bad
@@ -27,7 +27,7 @@ To answer these questions, I looked at each draft class since 1989 (when the dra
 
 ## The Data
 
-The data is from [basketball-reference.com](www.basketball-reference.com). First, a year's [draft class](http://www.basketball-reference.com/draft/NBA_2016.html) was pulled, then this was joined with that same season's [player statistics](http://www.basketball-reference.com/leagues/NBA_2017_advanced.html). This was done for every year 1989 - 2016. The follwing script was used to scrape and prepare the data for analysis. 
+The data is from [basketball-reference.com](www.basketball-reference.com). First, a year's [draft class](http://www.basketball-reference.com/draft/NBA_2016.html) was pulled, then this was joined with that same season's [player statistics](http://www.basketball-reference.com/leagues/NBA_2017_advanced.html). This was done for every year 1989 - 2016. The following script was used to scrape and prepare the data for analysis. 
 
 ```{r, eval=FALSE}
 library(rvest)
@@ -75,7 +75,11 @@ get_year_data <- function(year){
   year_info <- data_frame(
     Year = year,
     Teams = length(unique(adv_stats$Tm[!adv_stats$Tm %in% c("TOT", "Tm")])),
-    Minutes = sum(as.numeric(adv_stats$MP[adv_stats$Tm != "TOT"]), na.rm=TRUE))
+    Minutes = sum(as.numeric(adv_stats$MP[adv_stats$Tm != "TOT"]), na.rm=TRUE),
+    WinShares = sum(as.numeric(adv_stats$WS[adv_stats$Tm != "TOT"]), na.rm=TRUE),
+    Points = sum(as.numeric(tot_stats$PTS), na.rm=TRUE),
+    Rebounds = sum(as.numeric(tot_stats$TRB), na.rm=TRUE),
+    Assits = sum(as.numeric(AST), na.rm=TRUE))
   
   inner_join(draft, adv_stats, by = "Player") %>% 
     select(Pick, Player, Tm, Pos, G, MP, OWS, DWS, WS) %>% 
