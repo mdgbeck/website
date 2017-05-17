@@ -1,5 +1,5 @@
 +++
-title = "About Me"
+title = "About"
 date = "2017-05-12"
 +++
 
