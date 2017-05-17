@@ -44,9 +44,9 @@ googleAnalytics = ""
 
     header = "Michael Groesbeck"
 
-    paragraph = "A website to display my projects"
+    paragraph = "A website for my projects"
 
-    about     = "My name is Michael Groesbeck, and this is where I will post the various data projects I work on."
+    about     = "My name is Michael Groesbeck, I'm a statistician / data analyst who works primarly in R."
 
 # This will also appear on the sidebar.
 # A width of less than 100px is recommended
@@ -56,8 +56,8 @@ googleAnalytics = ""
     # modify your picture in the shape of a circle or
     # future imperfect's hexagonal shape
     circle    = true
-    imperfect = true
-    width     = "120px"
+    imperfect = false
+    width     = "175px"
     alt       = "Hugo Future Imperfect"
 
 # Adjust the amount of recent posts on the sidebar.
