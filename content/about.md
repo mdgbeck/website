@@ -1,5 +1,5 @@
 +++
-title = "About Me"
+title = "About"
 date = "2017-05-12"
 +++
 
@@ -14,7 +14,7 @@ I am currently working as Head of Reporting and Analytics at [ActiveCare](http:/
 
 ## Website
 
-This site is built with Hugo, with the theme [Future Imperfect](http://themes.gohugo.io/future-imperfect/) ported by [Julio Pescador](https://github.com/jpescador). I created the site using [Yihui Xie's](https://yihui.name/) excellent R package [`blogdown`](https://bookdown.org/yihui/blogdown/).
+This site is built with Hugo, using the theme [Future Imperfect](http://themes.gohugo.io/future-imperfect/) ported by [Julio Pescador](https://github.com/jpescador). I created and manage the site using [Yihui Xie's](https://yihui.name/) excellent R package [`blogdown`](https://bookdown.org/yihui/blogdown/).
 
 All the posts, and files for the website can be found in my [website repo](https://github.com/mdgbeck/website) on GitHub.
 
