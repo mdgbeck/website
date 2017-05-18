@@ -25,7 +25,6 @@ Posts are released under [Creative Commons Attribution-ShareAlike 4.0 Internatio
 My interests include data analytics, photography, basketball, and soccer. I currently live in Pleasant Grove, Utah with my wife and our two dogs.
 
 ![Theo](/img/main/theo.jpg)
-
 Theo - Dutch Shepherd mix
 
 ![Bear](/img/main/bear.jpg)
