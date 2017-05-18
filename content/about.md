@@ -27,5 +27,6 @@ My interests include data analytics, photography, basketball, and soccer. I curr
 ![Theo](/img/main/theo.jpg)
 Theo - Dutch Shepherd mix
 
+
 ![Bear](/img/main/bear.jpg)
 Bear - Belgian Malinois
