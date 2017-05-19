@@ -5,7 +5,7 @@ date = "2017-05-12"
 
 ## About Me
 
-I am currently working as Head of Reporting and Analytics at [ActiveCare](http://www.activecare.com/), where I've been since June 2016. There I lead a small team handling our reports for our customers, do business analytics, as well as internal research using medical data. I primarly do analyses using R, and use SQL Server Reporting Services (SSRS) for our external reports. I received a Bachelor's of Science in Statistics from Brigham Young University in April 2016. 
+I am currently working as Head of Reporting and Analytics at [ActiveCare](http://www.activecare.com/), where I've been since June 2016. There I lead a small team handling reports for our customers, do business analytics, as well as internal research using medical data. I primarly do analyses using R, and use SQL Server Reporting Services (SSRS) for our external reports. I received a Bachelor's of Science in Statistics from Brigham Young University in April 2016. 
 
 
 ## Publications

@@ -121,7 +121,7 @@ theme_rom <- theme_fivethirtyeight() +
 ggplot(by_year, aes(Year, Perc_MP)) +
   geom_line(color = "#00369C", size = 1.5) +
   scale_x_continuous(breaks = 1989:2016) +
-  scale_y_continuous(labels = percent) +
+  scale_y_continuous(labels = percent, limits = c(.05, .09)) +
   theme_rom +
   labs(title = "Contribution by NBA Draft Classes", 
        subtitle = "Minutes Played",
