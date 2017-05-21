@@ -169,7 +169,7 @@ To answer Van Gundy's question, while this years draft class may not have been t
 library(htmlwidgets)
 library(htmltools)
 
-htmlwidgets::saveWidget(year_html, file = "year_tab.html", selfcontained = TRUE)
+htmlwidgets::saveWidget(year_tab, file = "year_tab.html", selfcontained = TRUE)
 
 ```
 
