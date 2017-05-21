@@ -168,7 +168,7 @@ year_tab <- by_year %>%
             `Total WS` = TotalWS,
             `Percent WS` = round(Perc_WS, 3),
             `Total WS`) %>% 
-  datatable(rownames=FALSE, width=900)
+  datatable(rownames=FALSE, width=800, height=400)
 
 year_tab
 
