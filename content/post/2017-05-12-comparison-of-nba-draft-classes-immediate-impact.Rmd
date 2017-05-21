@@ -148,7 +148,29 @@ ggplot(by_year, aes(Year, Perc_WS)) +
 
 Again, we see that the 2014 draft class had the lowest percentage- less than 2\% of all win shares came from rookies that year. Similarly, the 2016 had the second lowest at 2.10\%. 
 
+```{r, message=FALSE, warning=FALSE, include=FALSE}
+library(DT)
+library(tidyverse)
+
+year_tab <- by_year %>% 
+  datatable()
+
+year_tab
+
+```
+
+
 As we might expect, the percent of total win shares and percent of total minutes each year are highly correlated with each other (*r* = 0.87). I do not think this is a problem, as the question asked was about initial contribution not the talent of the rookies. Whether we consider minutes played or win shares a better measure of impact, both suggest that the 2014 draft may have been the least immediately impactful. 
 
 To answer Van Gundy's question, while this years draft class may not have been the absolute worst, they were certainly among the lowest contributing rookie class in history.
 
+
+```{r, message=FALSE, warning=FALSE, include=FALSE}
+library(htmlwidgets)
+library(htmltools)
+
+htmlwidgets::saveWidget(year_html, file = "year_tab.html", selfcontained = TRUE)
+
+```
+
+<iframe seamless src="../year_tab/index.html" width="100%" height="500"></iframe>
