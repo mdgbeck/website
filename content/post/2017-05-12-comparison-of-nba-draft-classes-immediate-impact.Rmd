@@ -93,7 +93,7 @@ nba <- lapply(1989:2016, get_draft_data) %>%
 
 The first thing that can be used as a measure of contribution is minutes played. In order to compare across seasons, we compute what percentage of minutes played in a season were by rookies.
 
-```{r, echo=FALSE, fig.width=8}
+```{r, echo=FALSE, fig.width=9}
 library(tidyverse)
 library(scales)
 library(ggthemes)
@@ -107,25 +107,30 @@ by_year <- nba %>%
   mutate(Perc_MP = MP / TotalMP,
          Perc_WS = WS / TotalWS)
 
-theme_rom <- theme_fivethirtyeight() + 
-  theme(axis.text.x = element_text(angle = 90, vjust = .4),
-        axis.title = element_text(),
-        axis.title.x = element_blank(),
-        legend.position = "bottom", 
-        panel.background = element_rect(fill = "#fffefc"),
-        plot.background = element_rect(fill = "#fffefc"),
-        legend.background = element_rect(fill = "#fffefc"),
-        legend.key = element_rect(fill = "#fffefc"),
-        panel.grid.major = element_line(color = "#d2d2d8"))
+theme_mdgbeck <- theme(
+  panel.background = element_rect(fill="#fffefc"),
+  plot.background = element_rect(fill="#fffefc"),
+  legend.background = element_rect(fill="#fffefc"),
+  legend.key = element_rect(fill="#fffefc"),
+  panel.grid.major = element_line(color ="#d2d2d8"),
+  strip.background = element_rect(fill = NA),
+  panel.border = element_rect(fill=NA, color="gray31"),
+  axis.ticks = element_blank(),
+  plot.title = element_text(family = "mono", face = "bold", size = 21),
+  plot.subtitle = element_text(family = "mono", size = 13),
+  axis.title = element_text(family = "mono", size = 13),
+  axis.text = element_text(family = "mono", size=11, color="black")
+)
 
 ggplot(by_year, aes(Year, Perc_MP)) +
   geom_line(color = "#00369C", size = 1.5) +
   scale_x_continuous(breaks = 1989:2016) +
   scale_y_continuous(labels = percent, limits = c(.05, .09)) +
-  theme_rom +
   labs(title = "Contribution by NBA Draft Classes", 
        subtitle = "Minutes Played",
-       y = "Percent of total minutes")
+       y = "Percent of total minutes") +
+  theme_mdgbeck +
+  theme(axis.text.x = element_text(angle = 90, vjust = .5))
 
 ```
 
@@ -133,16 +138,17 @@ For any given year rookies played an average of around 7\% of all minutes in a s
 
 The next statistic to consider is the number of win shares rookies contributed. Again we measure this as a percentage of total win shares each season.
 
-```{r, echo=FALSE, fig.width=8}
+```{r, echo=FALSE, fig.width=9}
 
 ggplot(by_year, aes(Year, Perc_WS)) +
   geom_line(color = "#00369C", size = 1.5) +
   scale_x_continuous(breaks = 1989:2016) +
   scale_y_continuous(labels = percent) +
-  theme_rom +
   labs(title="Contribution by NBA Draft Classes", 
        subtitle="Win Shares",
-       y = "Percent of total win shares")
+       y = "Percent of total win shares") +
+  theme_mdgbeck +
+  theme(axis.text.x = element_text(angle = 90, vjust = .5))
 
 ```
 
@@ -153,6 +159,15 @@ library(DT)
 library(tidyverse)
 
 year_tab <- by_year %>% 
+  data.frame() %>% 
+  transmute(Year,
+            `Rookie Minutes` = MP,
+            `Total MP` = TotalMP,
+            `Percent MP` = round(Perc_MP, 3),
+            `Rookie WS` = WS,
+            `Total WS` = TotalWS,
+            `Percent WS` = round(Perc_WS, 3),
+            `Total WS`) %>% 
   datatable()
 
 year_tab
