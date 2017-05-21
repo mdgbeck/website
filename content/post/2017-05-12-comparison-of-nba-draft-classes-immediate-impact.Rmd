@@ -161,14 +161,14 @@ library(tidyverse)
 year_tab <- by_year %>% 
   data.frame() %>% 
   transmute(Year,
-            `Rookie Minutes` = MP,
+            `Rookie MP` = MP,
             `Total MP` = TotalMP,
             `Percent MP` = round(Perc_MP, 3),
             `Rookie WS` = WS,
             `Total WS` = TotalWS,
             `Percent WS` = round(Perc_WS, 3),
             `Total WS`) %>% 
-  datatable()
+  datatable(rownames=FALSE)
 
 year_tab
 
