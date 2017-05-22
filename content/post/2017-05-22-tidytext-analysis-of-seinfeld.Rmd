@@ -25,11 +25,11 @@ knitr::opts_chunk$set(message = FALSE, warnings = FALSE)
 ```
 
 
-I began working on the basis of this post nearly two years ago, when I read an [article](http://www.slate.com/articles/arts/culturebox/2015/07/seinfeld_on_hulu_how_jerry_kramer_george_and_elaine_evolved_over_the_sitcom.html) analyzing how Seinfeld had changed over its seasons. At the time, I was still a student and thought using the scripts as data for a class project would be interesting. I got as far as beginning to crudely scrape the data, but realized I did not know where to begin as far as any analysis. So instead I did the project on something else, and left the Seinfeld data to gather figurative dust. More recently, I learned of the `tidytext` package and it's excellent book, ["Text Mining with R"](http://tidytextmining.com/) by Julia Silge and David Robinson, and now have the knowledge and tools to complete the project.
+I began working on the basis of this post nearly two years ago, when I read an [article](http://www.slate.com/articles/arts/culturebox/2015/07/seinfeld_on_hulu_how_jerry_kramer_george_and_elaine_evolved_over_the_sitcom.html) analyzing how Seinfeld had changed over its seasons. At the time, I was still a student and thought using the scripts as data for a class project would be interesting. I got as far as beginning to crudely scrape the data, but realized I did not know where to begin as far as any analysis. So instead I did the project on something else, and left the Seinfeld data to gather figurative dust. More recently, I learned of the `tidytext` package and it's excellent book, "[Text Mining with R](http://tidytextmining.com/)" by [Julia Silge](http://juliasilge.com/) and [David Robinson](http://varianceexplained.org/), and now have the knowledge and tools to complete the project.
 
 ## The Data
 
-Seinfeld ran for nine seasons from 1989 - 1998, with a total of 180 episodes. Often called "the show about nothing", the series was about Jerry Seinfeld, and his day to day life with friends, George Castanza, Elaine Benes, and Cosmo Kramer. Transcriptions of each of the episodes can be found on the fan site [Seinology.com](http://www.seinology.com/scripts-english.shtml). I scraped all the scripts using the `rvest` package. The first thing to grab is the link to each episode.
+Seinfeld ran for nine seasons from 1989 - 1998, with a total of 180 episodes. Often called "the show about nothing", the series was about Jerry Seinfeld, and his day to day life with friends, George Costanza, Elaine Benes, and Cosmo Kramer. Transcriptions of each of the episodes can be found on the fan site [Seinology.com](http://www.seinology.com/scripts-english.shtml). I scraped all the scripts using the `rvest` package. The first thing to grab is the link to each episode.
 
 ```{r, eval=FALSE}
 library(tidyverse)
@@ -44,7 +44,7 @@ links <- read_html("http://www.seinology.com/scripts-english.shtml") %>%
   mutate(full_url = paste0("http://www.seinology.com/", url))
 ```
 
-I then wrote a function that takes the URL for an episode and pulls the necessary data. Unfortunately, as the scipts were submitted to the site by different fans of the show there is no standard format, making the scraping a little trickier. By using a combination of regular expressions and other tools, was are able to pull the necessary information. The function gets the needed data and returns a data frame where each row is a line of dialogue with the following variables:
+I then wrote a function that takes the URL for an episode and pulls the necessary data. Unfortunately, as the scripts were submitted to the site by different fans of the show there is no standard format, making the scraping a little trickier. By using a combination of regular expressions and other tools, was are able to pull the necessary information. The function gets the needed data and returns a data frame where each row is a line of dialogue with the following variables:
 
 * `season`: the season the episode aired
 * `episode`: the episode number
@@ -258,7 +258,7 @@ ggplot(frequency, aes(x = proportion, y = OTHER,
 
 ```
 
-We learn that Elaine says "David" more than others, which makes sense as she dated David Puddy for number of episodes (and the rest of the gang normally called him "Puddy"). George says "Susan" more than others, and Jerry says his own name less frequently than others. Some of my favorites are Kramer's- he uses the words "[buddy](https://www.youtube.com/watch?v=aw6vye15SR0)", "[cubans]", and "[assman](https://www.youtube.com/watch?v=hzHOmiV0eGU)" more frequently than anyone else.
+We learn that Elaine says "David" more than others, which makes sense as she dated David Puddy for number of episodes (and the rest of the gang normally called him "Puddy"). George says "Susan" more than others, and Jerry says his own name less frequently than others. Some of my favorites are Kramer's- he uses the words "[buddy](https://www.youtube.com/watch?v=aw6vye15SR0)", "[Cubans]", and "[assman](https://www.youtube.com/watch?v=hzHOmiV0eGU)" more frequently than anyone else.
 
 We can use correlation tests to measure how similar the character's word frequencies are. I've plotted the correlation, along with with a surrounding 95\% interval, of each of the four leads compared with the word frequencies of all other characters combined.
 
@@ -413,7 +413,7 @@ htmlwidgets::saveWidget(top_episode_table, file = "top_episode_table.html",
 
 <iframe seamless src="../top_episode_table/index.html" width="100%" height="500"></iframe>
 
-Many of the most important words are character names unique to that episode, but there are other ones which are very interesting. 
+Many of the most important words are taken directly from the title, which means it works fairly well. There are also many episodes where character names unique to that episode are most important, but there are other ones which are very interesting. 
 
 Lastly, we can look at the network of words to see which words are most related with one another. First we tidy the data, but instead of having one word per row, this time we use two. We then separate the words into different columns, and filter out rows where either word is a stop word. We then use the `igraph` and `ggraph` packages to get the necessary information to make the graph.
 
@@ -453,4 +453,4 @@ ggraph(bigram_graph, layout = "fr") +
 
 As we look at the network, there are some common word pairs: half hour, security guard, toilet paper, Chinese food, and others. We also see some phrases that are unique to the show, including: [puffy shirt](https://www.youtube.com/watch?v=hMFY1cjt2yM), [bubble boy](https://www.youtube.com/watch?v=JC_yYH39YP0), [soup nazi](https://www.youtube.com/watch?v=1jSTiKHOFEI), [prognosis negative](http://seinfeld.wikia.com/wiki/Prognosis_Negative), and [Art Vandelay Industries](https://www.youtube.com/watch?v=RPxXPIdXWX0) 
 
-This is just the beginning of what is possible using tidy tools to analyze the scripts. In my next post, I'll do some basic sentiment analysis to look see if the characters changed as the show went on- and to see if there any evidence of independent George. 
+This is just the beginning of what is possible using tidy tools to analyze the scripts. In my next post, I'll do some basic sentiment analysis to look see if the characters changed as the show went on- and to see if there any evidence of Independent George. 
