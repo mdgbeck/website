@@ -1,6 +1,6 @@
 ---
 title: Tidytext Analysis of Seinfeld
-author: MIchael Groesbeck
+author: Michael Groesbeck
 date: '2017-05-22'
 slug: tidytext-analysis-of-seinfeld
 categories:
@@ -25,7 +25,7 @@ linktitle: ''
 <p>I began working on the basis of this post nearly two years ago, when I read an <a href="http://www.slate.com/articles/arts/culturebox/2015/07/seinfeld_on_hulu_how_jerry_kramer_george_and_elaine_evolved_over_the_sitcom.html">article</a> analyzing how Seinfeld had changed over its seasons. At the time, I was still a student and thought using the scripts as data for a class project would be interesting. I got as far as beginning to crudely scraping the data, but realized I had didn’t know where to begin as far as any analysis. So instead, I did the project on comparing variance across different European soccer leagues, and left the Seinfeld data to gather figurative dust. More recently, I learned of the <code>tidytext</code> package and it’s excellent book, <a href="http://tidytextmining.com/">“Text Mining with R”</a> by Julia Silge and David Robinson, and now have the knowledge and tools to complete the project.</p>
 <div id="the-data" class="section level2">
 <h2>The Data</h2>
-<p>I scrapped the scripts for all 180 episodes from <a href="http://www.seinology.com/scripts-english.shtml">Seinology.com</a> using the <code>rvest</code> <a href="https://cran.r-project.org/web/packages/rvest/">package</a>. The first step is to grab all the links to each episode.</p>
+<p>Seinfeld ran for nine seasons from 1989 - 1998, with a total of 180 episodes. Often called “the show about nothing”, the series was about Jerry Seinfeld, and his day to day life with his friends, George Castanza, Elaine Benes, and Cosmo Kramer. Transcriptions of each of the episodes can be found on the fan site <a href="http://www.seinology.com/scripts-english.shtml">Seinology.com</a>. I scraped all the scripts using the <code>rvest</code> package. The first thing to grab is the link to each episode.</p>
 <pre class="r"><code>library(tidyverse)
 library(rvest)
 
@@ -36,7 +36,7 @@ links &lt;- read_html(&quot;http://www.seinology.com/scripts-english.shtml&quot;
   select(url = 1) %&gt;%
   filter(grepl(&quot;shtml&quot;, url) &amp; !duplicated(url)) %&gt;% 
   mutate(full_url = paste0(&quot;http://www.seinology.com/&quot;, url))</code></pre>
-<p>I then wrote a function that takes the URL for an episode and pulls the necessary data. Using a combination of regular expressions and other tools, the function returns a data frame where each row is a line of dialogue with the following variables:</p>
+<p>I then wrote a function that takes the URL for an episode and pulls the necessary data. Unfortunately, as the scipts were submitted to the site by different fans of the show there is no standard format, making the scraping a little trickier. By using a combination of regular expressions and other tools, was are able to pull the necessary information. The function gets the needed data and returns a data frame where each row is a line of dialogue with the following variables:</p>
 <ul>
 <li><code>season</code>: the season the episode aired</li>
 <li><code>episode</code>: the episode number</li>
@@ -47,7 +47,7 @@ links &lt;- read_html(&quot;http://www.seinology.com/scripts-english.shtml&quot;
 <li><code>speaker</code>: the speaker of the line</li>
 <li><code>line</code>: the spoken line</li>
 </ul>
-<p>The function removes text that is non-spoken, such as any transcribed stage directions or descriptions of actions.</p>
+<p>All text that is non-spoken, such as any transcribed stage directions or descriptions of actions, is not included. I then used the function to pull the data for every URL in the <code>links</code> table. The resulting data can be downloaded <a href="https://github.com/mdgbeck/data">here</a>. Note that the scene number is not available for certain episodes as the transcriber for some scripts did not include any indication of scenes. <a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a> I compared scene numbers with the graph in the <a href="http://www.slate.com/articles/arts/culturebox/2015/07/seinfeld_on_hulu_how_jerry_kramer_george_and_elaine_evolved_over_the_sitcom.html">article</a> mentioned above and got very similar results. I found a few differences, but as this post does not use scene numbers I did not bother further.</p>
 <pre class="r"><code>library(stringr)
 
 # function to pull any script return necessary data
@@ -135,9 +135,10 @@ pull_script &lt;- function(page_url){
     
   }
   dat
-}</code></pre>
-<p>The function was then used to pull the data for every URL in the <code>links</code> table. The resulting data can be downloaded <a href="https://github.com/mdgbeck/data">here</a>. Note that the scene number is not available for certain episodes as the transcriber for some scripts did not include any indication of scenes. <a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a> I compared scene numbers with the graph in the <a href="http://www.slate.com/articles/arts/culturebox/2015/07/seinfeld_on_hulu_how_jerry_kramer_george_and_elaine_evolved_over_the_sitcom.html">article</a> mentioned above and got very similar results. I found a few differences, but as this post does not use scene numbers I did not bother further.</p>
-<pre class="r"><code>seinfeld &lt;- lapply(links$full_url[1:176], pull_script) %&gt;% 
+}
+
+# run for all episodes
+seinfeld &lt;- lapply(links$full_url[1:176], pull_script) %&gt;% 
   bind_rows() %&gt;% 
   
 seinfeld &lt;- seinfeld %&gt;% 
@@ -148,22 +149,26 @@ seinfeld$scene_num[seinfeld$episode %in% c(54, 121)] &lt;- NA</code></pre>
 </div>
 <div id="analysis" class="section level2">
 <h2>Analysis</h2>
-<p>We start by comparing word frequencies of the different characters. This analysis will be focused on the four main characters and how they compare to everyone else. There are some things we have to fix in the data before we can begin. In the first episode, Kramer is called Kessler so we fix this. We then create a new variable that lists the speaker if they are one of Jerry, George, Elaine, or Kramer, and is Other for everyone else. The data also includes some lines that are blank dues to the script reading something like “ELAINE: (chuckles)” so we remove any blank lines.</p>
+<p>Nearly all of the following analysis is adapted from the previously mentioned book, <a href="http://tidytextmining.com/">Text Mining with R</a>. The book is available online and does a great job introducing text analysis, and giving examples of text mining. If you are interested in learning more- or doing your own analysis using this data- I highly recommend starting there.</p>
+<p>We start by comparing word frequencies of the different characters. This analysis will be focused on the four main characters and how they compare to everyone else. There are some things we have to fix in the data before we can begin. In the first episode, Kramer is called Kessler so we change this. We then create a new variable that lists the speaker if they are one of Jerry, George, Elaine, or Kramer, and lists Other for everyone else. The data also includes some lines that are blank due to the script reading something like “ELAINE: (chuckles)” so we remove any blank lines as well. We then convert the text into a tidy one word per row format, and remove any <a href="https://en.wikipedia.org/wiki/Stop_words">stop words</a> using an <code>anti_join</code>. With our data in a tidy format, we can begin to compare word frequencies of the main characters. We use tools from <code>dplyr</code> and <code>tidyr</code> <a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a> to do this.</p>
 <pre class="r"><code>library(tidyverse)
 
 seinfeld$speaker[seinfeld$speaker == &quot;KESSLER&quot;] &lt;- &quot;KRAMER&quot;
 
+# remove blank lines and create new variable
 seinfeld &lt;- seinfeld %&gt;% 
   filter(line != &quot;&quot; &amp; !is.na(line)) %&gt;% 
   mutate(speaker2 = ifelse(
     speaker %in% c(&quot;JERRY&quot;, &quot;GEORGE&quot;, &quot;KRAMER&quot;, &quot;ELAINE&quot;),
-    speaker, &quot;OTHER&quot;))</code></pre>
-<p>The next step is tidying the data to a one word per row format. In this format we can use an <code>anti_join</code> to remove any stop words.</p>
-<pre class="r"><code>tidy_scripts &lt;- seinfeld %&gt;% 
+    speaker, &quot;OTHER&quot;))
+
+# tidy the data to one word per line, removing stop words
+tidy_scripts &lt;- seinfeld %&gt;% 
   unnest_tokens(word, line) %&gt;% 
-  anti_join(stop_words)</code></pre>
-<p>With our data in a tidy format we can begin to compare word frequencies of the main characters. We use tools from <code>dplyr</code> and <code>tidyr</code> <a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a> to do this.</p>
-<pre class="r"><code>frequency &lt;- tidy_scripts %&gt;% 
+  anti_join(stop_words)
+
+# get counts for each word by character
+frequency &lt;- tidy_scripts %&gt;% 
   mutate(word = str_extract(word, &quot;[a-z&#39;]+&quot;)) %&gt;% 
   count(speaker2, word) %&gt;% 
   group_by(speaker2) %&gt;% 
@@ -183,9 +188,9 @@ seinfeld &lt;- seinfeld %&gt;%
   facet_wrap(~speaker, ncol = 2) +
   labs(y = &quot;OTHER&quot;, x = NULL)  +
   theme(legend.position = &quot;none&quot;)</code></pre>
-<p><img src="/post/2017-05-22-tidytext-analysis-of-seinfeld_files/figure-html/unnamed-chunk-10-1.png" width="979.2" /></p>
-<p>We learn that Elaine says “David” more than others, which makes sense as she dated David Puddy for number of episodes (and the rest of the gang normally calls him “Puddy”). George says “Susan” more than others, Jerry says his own name less frequently than others0. Some of my favorites are Kramer’s- he uses the words “<a href="https://www.youtube.com/watch?v=aw6vye15SR0">buddy</a>”, “[cubans]”, and “<a href="https://www.youtube.com/watch?v=hzHOmiV0eGU">assman</a>” more frequently than others.</p>
-<p>We can use correlation tests to measure how similar the character’s word frequencies are. I’ve plotted the correlation, along with with a surronding 95% interval, of each compared with the word frequencies of all other characters combined.</p>
+<p><img src="/post/2017-05-22-tidytext-analysis-of-seinfeld_files/figure-html/unnamed-chunk-7-1.png" width="979.2" /></p>
+<p>We learn that Elaine says “David” more than others, which makes sense as she dated David Puddy for number of episodes (and the rest of the gang normally called him “Puddy”). George says “Susan” more than others, and Jerry says his own name less frequently than others. Some of my favorites are Kramer’s- he uses the words “<a href="https://www.youtube.com/watch?v=aw6vye15SR0">buddy</a>”, “[cubans]”, and “<a href="https://www.youtube.com/watch?v=hzHOmiV0eGU">assman</a>” more frequently than anyone else.</p>
+<p>We can use correlation tests to measure how similar the character’s word frequencies are. I’ve plotted the correlation, along with with a surrounding 95% interval, of each of the four leads compared with the word frequencies of all other characters combined.</p>
 <pre class="r"><code>frequency %&gt;% 
   group_by(speaker) %&gt;% 
   do(tidy(cor.test(.$proportion, .$OTHER))) %&gt;% 
@@ -198,9 +203,9 @@ seinfeld &lt;- seinfeld %&gt;%
        subtitle = &quot;Gang Compared With Everyone Else Combined&quot;) +
   theme(legend.position = &quot;none&quot;,
         axis.title.y = element_blank())</code></pre>
-<p><img src="/post/2017-05-22-tidytext-analysis-of-seinfeld_files/figure-html/unnamed-chunk-12-1.png" width="960" /></p>
-<p>All four have fairly high correlation with the other characters, and are similar to one another. However, Kramer is less correlated than the others, indicating that he does use words with different frequencies. We now have data backing up that is in fact the most unique of the main characters!</p>
-<p>Another statistic we can compute is tf-idf (term frequency - inverse document frequency). <a href="http://tidytextmining.com/tfidf.html">Tidy Text Mining</a> says about tf-idf;</p>
+<p><img src="/post/2017-05-22-tidytext-analysis-of-seinfeld_files/figure-html/unnamed-chunk-9-1.png" width="960" /></p>
+<p>All four have fairly high correlation with the other characters, and are similar to one another. However, Kramer is less correlated than the others, meaning we now have evidence supporting the idea that Kramer is the most unique of the main characters!</p>
+<p>Another statistic we can compute is tf-idf (term frequency - inverse document frequency). <a href="http://tidytextmining.com/tfidf.html">Tidy Text Mining</a> says about tf-idf,</p>
 <blockquote>
 <p>The statistic tf-idf is intended to measure how important a word is to a document in a collection (or corpus) of documents, for example, to one novel in a collection of novels or to one website in a collection of websites.</p>
 </blockquote>
@@ -235,8 +240,8 @@ char_plot %&gt;%
        subtitle = &quot;Measured by tf-idf&quot;) +
   theme(legend.position = &quot;none&quot;,
         axis.title.y = element_blank())</code></pre>
-<p><img src="/post/2017-05-22-tidytext-analysis-of-seinfeld_files/figure-html/unnamed-chunk-14-1.png" width="960" /></p>
-<p>We can do the same thing, but calculate the most important word in each episode.</p>
+<p><img src="/post/2017-05-22-tidytext-analysis-of-seinfeld_files/figure-html/unnamed-chunk-11-1.png" width="960" /></p>
+<p>We can do the same thing, but instead calculate the most important word in each episode.</p>
 <pre class="r"><code>episode_words &lt;- seinfeld %&gt;% 
   unnest_tokens(word, line) %&gt;% 
   count(episode, title, word, sort = TRUE) %&gt;% 
@@ -258,9 +263,11 @@ top_episodes &lt;- episode_words %&gt;%
             n, 
             total,
             tf_idf = round(tf_idf, 4))</code></pre>
+<div id="most-important-word-in-each-episode" class="section level3">
+<h3>Most important word in each episode</h3>
 <iframe seamless src="../top_episode_table/index.html" width="100%" height="500">
 </iframe>
-<p>Many of the most important words character names unique to that episode, but there are other ones which are very interesting.</p>
+<p>Many of the most important words are character names unique to that episode, but there are other ones which are very interesting.</p>
 <p>Lastly, we can look at the network of words to see which words are most related with one another. First we tidy the data, but instead of having one word per row, this time we use two. We then separate the words into different columns, and filter out rows where either word is a stop word. We then use the <code>igraph</code> and <code>ggraph</code> packages to get the necessary information to make the graph.</p>
 <pre class="r"><code>library(igraph)
 library(ggraph)
@@ -293,8 +300,9 @@ ggraph(bigram_graph, layout = &quot;fr&quot;) +
   geom_node_point(color = &quot;lightblue&quot;, size = 3) +
   geom_node_text(aes(label = name), vjust = 1, hjust = 1) +
   theme_void()</code></pre>
-<p><img src="/post/2017-05-22-tidytext-analysis-of-seinfeld_files/figure-html/unnamed-chunk-17-1.png" width="960" /></p>
-<p>As we look at the network, there are some common word pairs: half hour, security guard, toilet paper, chinese food, and others. We also see some phrases that are unique to the show, including: <a href="https://www.youtube.com/watch?v=hMFY1cjt2yM">puffy shirt</a>, <a href="https://www.youtube.com/watch?v=JC_yYH39YP0">bubble boy</a>, <a href="https://www.youtube.com/watch?v=1jSTiKHOFEI">soup nazi</a>, <a href="http://seinfeld.wikia.com/wiki/Prognosis_Negative">prognosis negative</a>, and <a href="https://www.youtube.com/watch?v=RPxXPIdXWX0">Art Vandelay Industries</a></p>
+<p><img src="/post/2017-05-22-tidytext-analysis-of-seinfeld_files/figure-html/unnamed-chunk-14-1.png" width="960" /></p>
+<p>As we look at the network, there are some common word pairs: half hour, security guard, toilet paper, Chinese food, and others. We also see some phrases that are unique to the show, including: <a href="https://www.youtube.com/watch?v=hMFY1cjt2yM">puffy shirt</a>, <a href="https://www.youtube.com/watch?v=JC_yYH39YP0">bubble boy</a>, <a href="https://www.youtube.com/watch?v=1jSTiKHOFEI">soup nazi</a>, <a href="http://seinfeld.wikia.com/wiki/Prognosis_Negative">prognosis negative</a>, and <a href="https://www.youtube.com/watch?v=RPxXPIdXWX0">Art Vandelay Industries</a></p>
+</div>
 </div>
 <div class="footnotes">
 <hr />
