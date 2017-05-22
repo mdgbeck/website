@@ -22,7 +22,7 @@ linktitle: ''
 
 
 
-<p>I began working on the basis of this post nearly two years ago, when I read <a href="http://www.slate.com/articles/arts/culturebox/2015/07/seinfeld_on_hulu_how_jerry_kramer_george_and_elaine_evolved_over_the_sitcom.html">an article</a> analyzing how Seinfeld had changed over its seasons. At the time, I was still a student and thought using the scripts as data for a class project would be interesting. I got as far as beginning to crudely scraping the data, but realized I had didn’t know where to begin as far as any analysis. So instead, I did the project on comparing variance across different European soccer leagues, and left the Seinfeld data to gather figurative dust. More recently, I learned of the <code>tidytext</code> package and it’s excellent book, <a href="http://tidytextmining.com/">“Text Mining with R”</a> by Julia Silge and David Robinson, and now have the knowledge and tools to complete the project.</p>
+<p>I began working on the basis of this post nearly two years ago, when I read an <a href="http://www.slate.com/articles/arts/culturebox/2015/07/seinfeld_on_hulu_how_jerry_kramer_george_and_elaine_evolved_over_the_sitcom.html">article</a> analyzing how Seinfeld had changed over its seasons. At the time, I was still a student and thought using the scripts as data for a class project would be interesting. I got as far as beginning to crudely scraping the data, but realized I had didn’t know where to begin as far as any analysis. So instead, I did the project on comparing variance across different European soccer leagues, and left the Seinfeld data to gather figurative dust. More recently, I learned of the <code>tidytext</code> package and it’s excellent book, <a href="http://tidytextmining.com/">“Text Mining with R”</a> by Julia Silge and David Robinson, and now have the knowledge and tools to complete the project.</p>
 <div id="the-data" class="section level2">
 <h2>The Data</h2>
 <p>I scrapped the scripts for all 180 episodes from <a href="http://www.seinology.com/scripts-english.shtml">Seinology.com</a> using the <code>rvest</code> <a href="https://cran.r-project.org/web/packages/rvest/">package</a>. The first step is to grab all the links to each episode.</p>
@@ -172,15 +172,16 @@ seinfeld &lt;- seinfeld %&gt;%
   spread(speaker2, proportion) %&gt;% 
   gather(speaker, proportion, ELAINE:KRAMER)</code></pre>
 <p>We can now plot the frequencies and compare the characters. The graph displays each of the four main characters against all other characters. Words that are said at similar frequencies are found along the diagonal line. The words below the line are said more often by that character, and words said less often are above the line.</p>
-<pre class="r"><code>ggplot(frequency, aes(x = proportion, y=OTHER, color=abs(OTHER - proportion))) +
-  geom_abline(color=&quot;gray31&quot;, lty=2) +
-  geom_jitter(alpha = .02, size=2.5, width=.3, height = .3) +
-  geom_text(aes(label=word), check_overlap=TRUE, vjust=1.5, size=4) +
+<pre class="r"><code>ggplot(frequency, aes(x = proportion, y = OTHER, 
+                      color = abs(OTHER - proportion))) +
+  geom_abline(color = &quot;gray31&quot;, lty = 2) +
+  geom_jitter(alpha = .02, size = 2.5, width = .3, height = .3) +
+  geom_text(aes(label = word), check_overlap = TRUE, vjust = 1.5, size = 4) +
   scale_x_log10(labels = percent_format()) +
   scale_y_log10(labels = percent_format()) +
-  scale_color_gradient(limits = c(0, .001), low=&quot;#6A6EC2&quot;, high=&quot;gray75&quot;) +
-  facet_wrap(~speaker, ncol=2) +
-  labs(y=&quot;OTHER&quot;, x=NULL)  +
+  scale_color_gradient(limits = c(0, .001), low = &quot;#6A6EC2&quot;, high = &quot;gray75&quot;) +
+  facet_wrap(~speaker, ncol = 2) +
+  labs(y = &quot;OTHER&quot;, x = NULL)  +
   theme(legend.position = &quot;none&quot;)</code></pre>
 <p><img src="/post/2017-05-22-tidytext-analysis-of-seinfeld_files/figure-html/unnamed-chunk-10-1.png" width="979.2" /></p>
 <p>We learn that Elaine says “David” more than others, which makes sense as she dated David Puddy for number of episodes (and the rest of the gang normally calls him “Puddy”). George says “Susan” more than others, Jerry says his own name less frequently than others0. Some of my favorites are Kramer’s- he uses the words “<a href="https://www.youtube.com/watch?v=aw6vye15SR0">buddy</a>”, “[cubans]”, and “<a href="https://www.youtube.com/watch?v=hzHOmiV0eGU">assman</a>” more frequently than others.</p>
@@ -191,7 +192,7 @@ seinfeld &lt;- seinfeld %&gt;%
   ggplot(aes(estimate, speaker)) +
   geom_errorbarh(aes(xmin = conf.low, xmax = conf.high, height = .2, 
                      color = estimate), size = 1) +
-  geom_point(color=&quot;gray10&quot;, size=2) +
+  geom_point(color = &quot;gray10&quot;, size=2) +
   labs(x = &quot;correlation coefficient&quot;,
        title = &quot;Correlation of Word Frequencies&quot;,
        subtitle = &quot;Gang Compared With Everyone Else Combined&quot;) +
@@ -211,7 +212,7 @@ seinfeld &lt;- seinfeld %&gt;%
 
 total_words &lt;- char_words %&gt;% 
   group_by(speaker2) %&gt;% 
-  summarize(total=sum(n))
+  summarize(total = sum(n))
 
 char_words &lt;- left_join(char_words, total_words) %&gt;% 
   bind_tf_idf(word, speaker2, n)
@@ -225,9 +226,9 @@ char_plot %&gt;%
   group_by(speaker2) %&gt;% 
   top_n(10) %&gt;% 
   ungroup() %&gt;% 
-  ggplot(aes(word, tf_idf, fill=speaker2)) +
+  ggplot(aes(word, tf_idf, fill = speaker2)) +
   geom_col(show.legend=FALSE) +
-  facet_wrap(~speaker2, scales=&quot;free&quot;) +
+  facet_wrap(~speaker2, scales = &quot;free&quot;) +
   coord_flip() +
   labs(x = &quot;tf-idf&quot;,
        title = &quot;Most Important Words by Character&quot;,
@@ -238,7 +239,7 @@ char_plot %&gt;%
 <p>We can do the same thing, but calculate the most important word in each episode.</p>
 <pre class="r"><code>episode_words &lt;- seinfeld %&gt;% 
   unnest_tokens(word, line) %&gt;% 
-  count(episode, title, word, sort=TRUE) %&gt;% 
+  count(episode, title, word, sort = TRUE) %&gt;% 
   ungroup()
 
 total_words &lt;- episode_words %&gt;% 
@@ -265,10 +266,10 @@ top_episodes &lt;- episode_words %&gt;%
 library(ggraph)
 
 script_bigrams &lt;- seinfeld %&gt;% 
-  unnest_tokens(bigram, line, token=&quot;ngrams&quot;, n=2)
+  unnest_tokens(bigram, line, token = &quot;ngrams&quot;, n = 2)
 
 bigrams_sep &lt;- script_bigrams %&gt;% 
-  separate(bigram, c(&quot;word1&quot;, &quot;word2&quot;), sep=&quot; &quot;)
+  separate(bigram, c(&quot;word1&quot;, &quot;word2&quot;), sep = &quot; &quot;)
 
 bigrams_filtered &lt;- bigrams_sep %&gt;% 
   filter(!word1 %in% stop_words$word) %&gt;% 
@@ -276,7 +277,7 @@ bigrams_filtered &lt;- bigrams_sep %&gt;%
   filter(word1 != word2)
 
 bigram_counts &lt;- bigrams_filtered %&gt;% 
-  count(word1, word2, sort=TRUE)
+  count(word1, word2, sort = TRUE)
 
 bigram_graph &lt;- bigram_counts %&gt;% 
   filter(n &gt; 10) %&gt;% 

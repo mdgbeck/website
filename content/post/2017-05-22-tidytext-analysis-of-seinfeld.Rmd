@@ -21,11 +21,11 @@ linktitle: ''
 ---
 
 ```{r, include=FALSE}
-knitr::opts_chunk$set(message=FALSE, warnings=FALSE)
+knitr::opts_chunk$set(message = FALSE, warnings = FALSE)
 ```
 
 
-I began working on the basis of this post nearly two years ago, when I read [an article](http://www.slate.com/articles/arts/culturebox/2015/07/seinfeld_on_hulu_how_jerry_kramer_george_and_elaine_evolved_over_the_sitcom.html) analyzing how Seinfeld had changed over its seasons. At the time, I was still a student and thought using the scripts as data for a class project would be interesting. I got as far as beginning to crudely scraping the data, but realized I had didn't know where to begin as far as any analysis. So instead, I did the project on comparing variance across different European soccer leagues, and left the Seinfeld data to gather figurative dust. More recently, I learned of the `tidytext` package and it's excellent book, ["Text Mining with R"](http://tidytextmining.com/) by Julia Silge and David Robinson, and now have the knowledge and tools to complete the project.
+I began working on the basis of this post nearly two years ago, when I read an [article](http://www.slate.com/articles/arts/culturebox/2015/07/seinfeld_on_hulu_how_jerry_kramer_george_and_elaine_evolved_over_the_sitcom.html) analyzing how Seinfeld had changed over its seasons. At the time, I was still a student and thought using the scripts as data for a class project would be interesting. I got as far as beginning to crudely scraping the data, but realized I had didn't know where to begin as far as any analysis. So instead, I did the project on comparing variance across different European soccer leagues, and left the Seinfeld data to gather figurative dust. More recently, I learned of the `tidytext` package and it's excellent book, ["Text Mining with R"](http://tidytextmining.com/) by Julia Silge and David Robinson, and now have the knowledge and tools to complete the project.
 
 ## The Data
 
@@ -215,51 +215,53 @@ frequency <- tidy_scripts %>%
 We can now plot the frequencies and compare the characters. The graph displays each of the four main characters against all other characters. Words that are said at similar frequencies are found along the diagonal line. The words below the line are said more often by that character, and words said less often are above the line. 
 
 ```{r, eval=FALSE}
-ggplot(frequency, aes(x = proportion, y=OTHER, color=abs(OTHER - proportion))) +
-  geom_abline(color="gray31", lty=2) +
-  geom_jitter(alpha = .02, size=2.5, width=.3, height = .3) +
-  geom_text(aes(label=word), check_overlap=TRUE, vjust=1.5, size=4) +
+ggplot(frequency, aes(x = proportion, y = OTHER, 
+                      color = abs(OTHER - proportion))) +
+  geom_abline(color = "gray31", lty = 2) +
+  geom_jitter(alpha = .02, size = 2.5, width = .3, height = .3) +
+  geom_text(aes(label = word), check_overlap = TRUE, vjust = 1.5, size = 4) +
   scale_x_log10(labels = percent_format()) +
   scale_y_log10(labels = percent_format()) +
-  scale_color_gradient(limits = c(0, .001), low="#6A6EC2", high="gray75") +
-  facet_wrap(~speaker, ncol=2) +
-  labs(y="OTHER", x=NULL)  +
+  scale_color_gradient(limits = c(0, .001), low = "#6A6EC2", high = "gray75") +
+  facet_wrap(~speaker, ncol = 2) +
+  labs(y = "OTHER", x = NULL)  +
   theme(legend.position = "none")
 ```
 
 ```{r, echo=FALSE, fig.width=10.2, fig.height=8, warnings=FALSE}
 
 theme_mdgbeck <- theme(
-  panel.background = element_rect(fill="#fffefc"),
-  plot.background = element_rect(fill="#fffefc"),
-  legend.background = element_rect(fill="#fffefc"),
-  legend.key = element_rect(fill="#fffefc"),
+  panel.background = element_rect(fill = "#fffefc"),
+  plot.background = element_rect(fill = "#fffefc"),
+  legend.background = element_rect(fill = "#fffefc"),
+  legend.key = element_rect(fill = "#fffefc"),
   panel.grid.major = element_line(color ="#d2d2d8"),
   strip.background = element_rect(fill = NA),
-  panel.border = element_rect(fill=NA, color="gray31"),
+  panel.border = element_rect(fill = NA, color = "gray31"),
   axis.ticks = element_blank(),
   plot.title = element_text(family = "mono", face = "bold", size = 21),
   plot.subtitle = element_text(family = "mono", size = 13),
   axis.title = element_text(family = "mono", size = 13),
-  axis.text = element_text(family = "mono", size=11, color="black"),
-  strip.text = element_text(family = "mono", size = 13, color="black")
+  axis.text = element_text(family = "mono", size = 11, color = "black"),
+  strip.text = element_text(family = "mono", size = 13, color = "black")
 )
 
 set.seed(10)
-ggplot(frequency, aes(x = proportion, y=OTHER, color=abs(OTHER - proportion))) +
-  geom_abline(color="gray31", lty=2) +
-  geom_jitter(alpha = .02, size=2.5, width=.3, height = .3, na.rm=TRUE) +
-  geom_text(aes(label=word), check_overlap=TRUE, vjust=1.5, size=4, na.rm=TRUE) +
+ggplot(frequency, aes(x = proportion, y = OTHER, 
+                      color = abs(OTHER - proportion))) +
+  geom_abline(color = "gray31", lty = 2) +
+  geom_jitter(alpha = .02, size = 2.5, width = .3, height = .3, na.rm=TRUE) +
+  geom_text(aes(label = word), check_overlap=TRUE, vjust = 1.5, size = 4, na.rm=TRUE) +
   scale_x_log10(labels = percent_format()) +
   scale_y_log10(labels = percent_format()) +
-  scale_color_gradient(limits = c(0, .001), low="#6A6EC2", high="gray75") +
-  facet_wrap(~speaker, ncol=2) +
+  scale_color_gradient(limits = c(0, .001), low = "#6A6EC2", high = "gray75") +
+  facet_wrap(~speaker, ncol = 2) +
   labs(x = "Character's frequency",
        y = "Other's frequency", 
        title = "Word Frequency",
        subtitle = "Gang Compared With Everyone Else") +
   theme_mdgbeck +
-  theme(legend.position="none")
+  theme(legend.position = "none")
 
 ```
 
@@ -275,7 +277,7 @@ frequency %>%
   ggplot(aes(estimate, speaker)) +
   geom_errorbarh(aes(xmin = conf.low, xmax = conf.high, height = .2, 
                      color = estimate), size = 1) +
-  geom_point(color="gray10", size=2) +
+  geom_point(color = "gray10", size=2) +
   labs(x = "correlation coefficient",
        title = "Correlation of Word Frequencies",
        subtitle = "Gang Compared With Everyone Else Combined") +
@@ -315,7 +317,7 @@ char_words <- seinfeld %>%
 
 total_words <- char_words %>% 
   group_by(speaker2) %>% 
-  summarize(total=sum(n))
+  summarize(total = sum(n))
 
 char_words <- left_join(char_words, total_words) %>% 
   bind_tf_idf(word, speaker2, n)
@@ -329,9 +331,9 @@ char_plot %>%
   group_by(speaker2) %>% 
   top_n(10) %>% 
   ungroup() %>% 
-  ggplot(aes(word, tf_idf, fill=speaker2)) +
+  ggplot(aes(word, tf_idf, fill = speaker2)) +
   geom_col(show.legend=FALSE) +
-  facet_wrap(~speaker2, scales="free") +
+  facet_wrap(~speaker2, scales = "free") +
   coord_flip() +
   labs(x = "tf-idf",
        title = "Most Important Words by Character",
@@ -348,7 +350,7 @@ char_words <- seinfeld %>%
 
 total_words <- char_words %>% 
   group_by(speaker2) %>% 
-  summarize(total=sum(n))
+  summarize(total = sum(n))
 
 char_words <- left_join(char_words, total_words) %>% 
   bind_tf_idf(word, speaker2, n)
@@ -363,8 +365,8 @@ char_plot %>%
   top_n(10) %>% 
   ungroup() %>% 
   ggplot(aes(word, tf_idf, fill=speaker2)) +
-  geom_col(show.legend=FALSE) +
-  facet_wrap(~speaker2, scales="free") +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~speaker2, scales = "free") +
   coord_flip() +
   labs(x = "tf-idf",
        title = "Most Important Words by Character",
@@ -379,7 +381,7 @@ We can do the same thing, but calculate the most important word in each episode.
 ```{r}
 episode_words <- seinfeld %>% 
   unnest_tokens(word, line) %>% 
-  count(episode, title, word, sort=TRUE) %>% 
+  count(episode, title, word, sort = TRUE) %>% 
   ungroup()
 
 total_words <- episode_words %>% 
@@ -404,12 +406,14 @@ top_episodes <- episode_words %>%
 ```{r, echo=FALSE}
 library(DT)
 
-top_episode_table <- datatable(top_episodes, rownames=FALSE, width = 800, height = 400)
+top_episode_table <- datatable(top_episodes, rownames=FALSE, 
+                               width = 800, height = 400)
 
 library(htmlwidgets)
 library(htmltools)
 
-htmlwidgets::saveWidget(top_episode_table, file = "top_episode_table.html", selfcontained = TRUE)
+htmlwidgets::saveWidget(top_episode_table, file = "top_episode_table.html", 
+                        selfcontained = TRUE)
 
 ```
 
@@ -424,10 +428,10 @@ library(igraph)
 library(ggraph)
 
 script_bigrams <- seinfeld %>% 
-  unnest_tokens(bigram, line, token="ngrams", n=2)
+  unnest_tokens(bigram, line, token = "ngrams", n = 2)
 
 bigrams_sep <- script_bigrams %>% 
-  separate(bigram, c("word1", "word2"), sep=" ")
+  separate(bigram, c("word1", "word2"), sep = " ")
 
 bigrams_filtered <- bigrams_sep %>% 
   filter(!word1 %in% stop_words$word) %>% 
@@ -435,7 +439,7 @@ bigrams_filtered <- bigrams_sep %>%
   filter(word1 != word2)
 
 bigram_counts <- bigrams_filtered %>% 
-  count(word1, word2, sort=TRUE)
+  count(word1, word2, sort = TRUE)
 
 bigram_graph <- bigram_counts %>% 
   filter(n > 10) %>% 
