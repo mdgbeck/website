@@ -17,7 +17,6 @@ featuredpath: ''
 linktitle: ''
 ---
 
-
 ```{r, include=FALSE}
 knitr::opts_chunk$set(message=FALSE, warnings=FALSE)
 ```
