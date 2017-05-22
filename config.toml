@@ -3,9 +3,9 @@ languageCode = "en-us"
 title = "Michael Groesbeck"
 theme = "hugo-future-imperfect"
 preserveTaxonomyNames = true
-paginate = 3
-disqusShortname = "shortname"
-googleAnalytics = ""
+paginate = 2
+disqusShortname = "mdgbeck-netlify-com"
+googleAnalytics = "UA-99583063-1"
 
 [params]
     # Sets the meta tag description, usually reserved for the main page
