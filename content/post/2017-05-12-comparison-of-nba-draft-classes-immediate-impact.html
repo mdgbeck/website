@@ -40,6 +40,7 @@ get_draft_data &lt;- function(year){
   
   draft_site &lt;- read_html(draft_url)
   
+  # pull the links to the players&#39; pages from draft table
   draft &lt;- draft_site %&gt;% 
     html_nodes(&quot;.left:nth-child(4) a&quot;) %&gt;% 
     html_attr(&quot;href&quot;) %&gt;% 
@@ -52,14 +53,14 @@ get_draft_data &lt;- function(year){
   
   stats_site &lt;- read_html(stats_url)
   
-  # get the links to the players&#39; page for merging
+  # get the links to the players&#39; pages from stats table
   stats_links &lt;- stats_site %&gt;% 
     html_nodes(&quot;th+ .left a&quot;) %&gt;% 
     html_attr(&quot;href&quot;) %&gt;% 
     data_frame() %&gt;% 
     select(Link = 1)
   
-  # get the stats
+  # get the stats table
   stats &lt;- stats_site %&gt;% 
     html_node(&quot;table&quot;) %&gt;% 
     html_table(header=TRUE)
