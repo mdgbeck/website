@@ -98,7 +98,7 @@ library(tidyverse)
 library(scales)
 library(ggthemes)
 
-nba <- read_csv("~/Dropbox/projects/nba_draft_data.csv")
+nba <- read_csv("~/Dropbox/projects/nba/nba_draft_data.csv")
 
 by_year <- nba %>% 
   group_by(Year, TotalMP, TotalWS) %>% 
