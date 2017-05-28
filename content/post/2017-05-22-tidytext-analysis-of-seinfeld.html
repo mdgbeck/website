@@ -189,7 +189,7 @@ frequency &lt;- tidy_scripts %&gt;%
   labs(y = &quot;OTHER&quot;, x = NULL)  +
   theme(legend.position = &quot;none&quot;)</code></pre>
 <p><img src="/post/2017-05-22-tidytext-analysis-of-seinfeld_files/figure-html/unnamed-chunk-7-1.png" width="979.2" /></p>
-<p>We learn that Elaine says “David” more than others, which makes sense as she dated David Puddy for number of episodes (and the rest of the gang normally called him “Puddy”). George says “Susan” more than others, and Jerry says his own name less frequently than others. Some of my favorites are Kramer’s- he uses the words “<a href="https://www.youtube.com/watch?v=aw6vye15SR0">buddy</a>”, “[Cubans]”, and “<a href="https://www.youtube.com/watch?v=hzHOmiV0eGU">assman</a>” more frequently than anyone else.</p>
+<p>We learn that Elaine says “David” more than others, which makes sense as she dated David Puddy for number of episodes (and the rest of the gang normally called him “Puddy”). George says “Susan” more than others, and Jerry says his own name less frequently than others. Some of my favorites are Kramer’s- he uses the words “<a href="https://www.youtube.com/watch?v=aw6vye15SR0">buddy</a>”, “Cubans”, and “<a href="https://www.youtube.com/watch?v=hzHOmiV0eGU">assman</a>” more frequently than anyone else.</p>
 <p>We can use correlation tests to measure how similar the character’s word frequencies are. I’ve plotted the correlation, along with with a surrounding 95% interval, of each of the four leads compared with the word frequencies of all other characters combined.</p>
 <pre class="r"><code>frequency %&gt;% 
   group_by(speaker) %&gt;% 

@@ -258,7 +258,7 @@ ggplot(frequency, aes(x = proportion, y = OTHER,
 
 ```
 
-We learn that Elaine says "David" more than others, which makes sense as she dated David Puddy for number of episodes (and the rest of the gang normally called him "Puddy"). George says "Susan" more than others, and Jerry says his own name less frequently than others. Some of my favorites are Kramer's- he uses the words "[buddy](https://www.youtube.com/watch?v=aw6vye15SR0)", "[Cubans]", and "[assman](https://www.youtube.com/watch?v=hzHOmiV0eGU)" more frequently than anyone else.
+We learn that Elaine says "David" more than others, which makes sense as she dated David Puddy for number of episodes (and the rest of the gang normally called him "Puddy"). George says "Susan" more than others, and Jerry says his own name less frequently than others. Some of my favorites are Kramer's- he uses the words "[buddy](https://www.youtube.com/watch?v=aw6vye15SR0)", "Cubans", and "[assman](https://www.youtube.com/watch?v=hzHOmiV0eGU)" more frequently than anyone else.
 
 We can use correlation tests to measure how similar the character's word frequencies are. I've plotted the correlation, along with with a surrounding 95\% interval, of each of the four leads compared with the word frequencies of all other characters combined.
 
