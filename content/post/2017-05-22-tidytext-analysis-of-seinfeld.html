@@ -1,5 +1,5 @@
 ---
-title: Tidytext Analysis of Seinfeld
+title: Tidytext Analysis of *Seinfeld*
 author: Michael Groesbeck
 date: '2017-05-22'
 slug: tidytext-analysis-of-seinfeld
@@ -22,10 +22,10 @@ linktitle: ''
 
 
 
-<p>I began working on the basis of this post nearly two years ago, when I read an <a href="http://www.slate.com/articles/arts/culturebox/2015/07/seinfeld_on_hulu_how_jerry_kramer_george_and_elaine_evolved_over_the_sitcom.html">article</a> analyzing how Seinfeld had changed over its seasons. At the time, I was still a student and thought using the scripts as data for a class project would be interesting. I got as far as beginning to crudely scrape the data, but realized I did not know where to begin as far as any analysis. So instead I did the project on something else, and left the Seinfeld data to gather figurative dust. More recently, I learned of the <code>tidytext</code> package and it’s excellent book, “<a href="http://tidytextmining.com/">Text Mining with R</a>” by <a href="http://juliasilge.com/">Julia Silge</a> and <a href="http://varianceexplained.org/">David Robinson</a>, and now have more knowledge and tools to complete the project.</p>
+<p>I began working on the basis of this post nearly two years ago, when I read an <a href="http://www.slate.com/articles/arts/culturebox/2015/07/seinfeld_on_hulu_how_jerry_kramer_george_and_elaine_evolved_over_the_sitcom.html">article</a> analyzing how <em>Seinfeld</em> had changed over its seasons. At the time, I was still a student and thought using the scripts as data for a class project would be interesting. I got as far as beginning to crudely scrape the data, but realized I did not know where to begin as far as any analysis. So instead I did the project on something else, and left the <em>Seinfeld</em> data to gather figurative dust. More recently, I learned of the <code>tidytext</code> package and it’s excellent book, “<a href="http://tidytextmining.com/">Text Mining with R</a>” by <a href="http://juliasilge.com/">Julia Silge</a> and <a href="http://varianceexplained.org/">David Robinson</a>, and decided to continue the project.</p>
 <div id="the-data" class="section level2">
 <h2>The Data</h2>
-<p>Seinfeld ran for nine seasons from 1989 - 1998, with a total of 180 episodes. Often called “the show about nothing”, the series was about Jerry Seinfeld, and his day to day life with friends, George Costanza, Elaine Benes, and Cosmo Kramer. Transcriptions of each of the episodes can be found on the fan site <a href="http://www.seinology.com/scripts-english.shtml">Seinology.com</a>. I scraped all the scripts using the <code>rvest</code> package. The first thing to grab is the link to each episode.</p>
+<p><em>Seinfeld</em> ran for nine seasons from 1989 - 1998, with a total of 180 episodes. Often called “the show about nothing”, the series was about Jerry Seinfeld, and his day to day life with friends George Costanza, Elaine Benes, and Cosmo Kramer. Transcriptions of each of the episodes can be found on the fan site <a href="http://www.seinology.com/scripts-english.shtml">Seinology.com</a>. I scraped all the scripts using the <code>rvest</code> package. The first thing to grab is the link to each episode.</p>
 <pre class="r"><code>library(tidyverse)
 library(rvest)
 
@@ -36,7 +36,7 @@ links &lt;- read_html(&quot;http://www.seinology.com/scripts-english.shtml&quot;
   select(url = 1) %&gt;%
   filter(grepl(&quot;shtml&quot;, url) &amp; !duplicated(url)) %&gt;% 
   mutate(full_url = paste0(&quot;http://www.seinology.com/&quot;, url))</code></pre>
-<p>I then wrote a function that takes the URL for an episode and pulls the necessary data. Unfortunately, as the scripts were submitted to the site by different fans of the show there is no standard format, making the scraping a little trickier. By using a combination of regular expressions and other tools, was are able to pull the necessary information. The function gets the needed data and returns a data frame where each row is a line of dialogue with the following variables:</p>
+<p>I then wrote a function that takes the URL for an episode and pulls the necessary data. Unfortunately, as the scripts were submitted to the site by different fans there is no standard format, making the scraping a little trickier. By using a combination of regular expressions and other tools, we are able to pull the necessary information. The function gets the needed data and returns a data frame where each row is a line of dialogue with the following variables:</p>
 <ul>
 <li><code>season</code>: the season the episode aired</li>
 <li><code>episode</code>: the episode number</li>
@@ -149,7 +149,7 @@ seinfeld$scene_num[seinfeld$episode %in% c(54, 121)] &lt;- NA</code></pre>
 </div>
 <div id="analysis" class="section level2">
 <h2>Analysis</h2>
-<p>Nearly all of the following analysis is adapted from the previously mentioned book, <a href="http://tidytextmining.com/">Text Mining with R</a>. The book is available online and does a fantastic job introducing text analysis, and giving examples of text mining. If you are interested in learning more- or doing your own analysis using this data- I highly recommend starting there.</p>
+<p>Nearly all of the following analysis is adapted from the previously mentioned book, <a href="http://tidytextmining.com/">Text Mining with R</a>. The book is available online and does a fantastic job introducing text analysis, and giving examples of text mining. This post uses some of the methods to begin to explore the dialogue of <em>Seinfeld</em>.</p>
 <p>We start by comparing word frequencies of the different characters. This analysis will be focused on the four main characters and how they compare to everyone else. There are some things we have to fix in the data before we can begin. In the first episode, Kramer is called Kessler so we change this. We then create a new variable that lists the speaker if they are one of Jerry, George, Elaine, or Kramer, and lists Other for everyone else. The data also includes some lines that are blank due to the script reading something like “ELAINE: (chuckles)” so we remove any blank lines as well. We then convert the text into a tidy one word per row format, and remove any <a href="https://en.wikipedia.org/wiki/Stop_words">stop words</a> using an <code>anti_join</code>. With our data in a tidy format, we can begin to compare word frequencies of the main characters. We use tools from <code>dplyr</code> and <code>tidyr</code> <a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a> to do this.</p>
 <pre class="r"><code>library(tidyverse)
 
