@@ -1,5 +1,5 @@
 ---
-title: Tidytext Analysis of *Seinfeld*
+title: Tidytext Analysis of Seinfeld
 author: Michael Groesbeck
 date: '2017-05-22'
 slug: tidytext-analysis-of-seinfeld
