@@ -88,8 +88,12 @@ pull_script <- function(page_url){
   # get lines
   script_edit <- str_replace_all(script, "\t|\\(.*?\\)|\\[.*?\\]|NOTE:", "")
   
-  lines <- unlist(str_extract_all(script_edit, 
-                                  "(?<=\n[:upper:]{1,20}(\\s{1,20})?:).*"))
+  # regex patterns for pulling speakers and lines
+  line_regex <- "(?<=\n[A-Z]{1,20}(\\.)?(\\s{1,20})?([A-Z]{1,20})?:).*"
+  
+  speaker_regex <- "(?<=\n)[A-Z]+(\\.)?(\\s)?([A-Z]+)?(?=:)"
+  
+  lines <- unlist(str_extract_all(script_edit, line_regex))
   
   lines <- str_replace_all(lines, "\\u0092", "'")
   
@@ -103,7 +107,7 @@ pull_script <- function(page_url){
       # remove episode information
       slice(-1) %>% 
       mutate(text = str_replace_all(text, "\t|\\(.*?\\)|\\[.?\\]|NOTE:", ""),
-             speaker = str_extract_all(text, "(?<=\n)[:upper:]+(\\s)?(?=:)")) %>% 
+             speaker = str_extract_all(text, speaker_regex)) %>% 
       unnest(speaker)
   
   } else {
@@ -115,7 +119,7 @@ pull_script <- function(page_url){
       # remove episode information
       slice(-1) %>% 
       mutate(text = str_replace_all(text, "\t|\\(.*?\\)|\\[.?\\]|NOTE:", ""),
-             speaker = str_extract_all(text, "(?<=\n)[:upper:]+(\\s)?(?=:)")) %>% 
+             speaker = str_extract_all(text, speaker_regex)) %>% 
       unnest(speaker)
   
   } 
@@ -140,8 +144,7 @@ pull_script <- function(page_url){
       writer = writer,
       scene_num = NA,
       scene = NA,
-      speaker = unlist(str_extract_all(script_edit, 
-                                       "(?<=\n)[:upper:]+(\\s)?(?=:)")),
+      speaker = unlist(str_extract_all(script_edit, speaker_regex)),
       line = lines
     )
     
@@ -150,9 +153,9 @@ pull_script <- function(page_url){
 }
 
 # run for all episodes
-seinfeld <- lapply(links$full_url[1:176], pull_script) %>% 
-  bind_rows() %>% 
-  
+seinfeld <- lapply(links$full_url, pull_script) %>% 
+  bind_rows() 
+
 seinfeld <- seinfeld %>% 
   mutate(episode = as.numeric(episode))
 
@@ -258,7 +261,7 @@ ggplot(frequency, aes(x = proportion, y = OTHER,
 
 ```
 
-We learn that Elaine says "David" more than others, which makes sense as she dated David Puddy for number of episodes (and the rest of the gang normally called him "Puddy"). George says "Susan" more than others, and Jerry says his own name less frequently than others. Some of my favorites are Kramer's- he uses the words "[buddy](https://www.youtube.com/watch?v=aw6vye15SR0)", "Cubans", and "[assman](https://www.youtube.com/watch?v=hzHOmiV0eGU)" more frequently than anyone else.
+We learn that Elaine says "David" more than others, which makes sense as she dated David Puddy for number of episodes (and the rest of the gang normally called him "Puddy"). George says "Incredible" more than others, and Jerry says his own name less frequently than others. Some of my favorites are Kramer's- he uses the words "[buddy](https://www.youtube.com/watch?v=aw6vye15SR0)" and "[assman](https://www.youtube.com/watch?v=hzHOmiV0eGU)" more frequently than anyone else.
 
 We can use correlation tests to measure how similar the character's word frequencies are. I've plotted the correlation, along with with a surrounding 95\% interval, of each of the four leads compared with the word frequencies of all other characters combined.
 

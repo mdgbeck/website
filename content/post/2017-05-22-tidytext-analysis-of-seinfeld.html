@@ -76,8 +76,12 @@ pull_script &lt;- function(page_url){
   # get lines
   script_edit &lt;- str_replace_all(script, &quot;\t|\\(.*?\\)|\\[.*?\\]|NOTE:&quot;, &quot;&quot;)
   
-  lines &lt;- unlist(str_extract_all(script_edit, 
-                                  &quot;(?&lt;=\n[:upper:]{1,20}(\\s{1,20})?:).*&quot;))
+  # regex patterns for pulling speakers and lines
+  line_regex &lt;- &quot;(?&lt;=\n[A-Z]{1,20}(\\.)?(\\s{1,20})?([A-Z]{1,20})?:).*&quot;
+  
+  speaker_regex &lt;- &quot;(?&lt;=\n)[A-Z]+(\\.)?(\\s)?([A-Z]+)?(?=:)&quot;
+  
+  lines &lt;- unlist(str_extract_all(script_edit, line_regex))
   
   lines &lt;- str_replace_all(lines, &quot;\\u0092&quot;, &quot;&#39;&quot;)
   
@@ -91,7 +95,7 @@ pull_script &lt;- function(page_url){
       # remove episode information
       slice(-1) %&gt;% 
       mutate(text = str_replace_all(text, &quot;\t|\\(.*?\\)|\\[.?\\]|NOTE:&quot;, &quot;&quot;),
-             speaker = str_extract_all(text, &quot;(?&lt;=\n)[:upper:]+(\\s)?(?=:)&quot;)) %&gt;% 
+             speaker = str_extract_all(text, speaker_regex)) %&gt;% 
       unnest(speaker)
   
   } else {
@@ -103,7 +107,7 @@ pull_script &lt;- function(page_url){
       # remove episode information
       slice(-1) %&gt;% 
       mutate(text = str_replace_all(text, &quot;\t|\\(.*?\\)|\\[.?\\]|NOTE:&quot;, &quot;&quot;),
-             speaker = str_extract_all(text, &quot;(?&lt;=\n)[:upper:]+(\\s)?(?=:)&quot;)) %&gt;% 
+             speaker = str_extract_all(text, speaker_regex)) %&gt;% 
       unnest(speaker)
   
   } 
@@ -128,8 +132,7 @@ pull_script &lt;- function(page_url){
       writer = writer,
       scene_num = NA,
       scene = NA,
-      speaker = unlist(str_extract_all(script_edit, 
-                                       &quot;(?&lt;=\n)[:upper:]+(\\s)?(?=:)&quot;)),
+      speaker = unlist(str_extract_all(script_edit, speaker_regex)),
       line = lines
     )
     
@@ -138,9 +141,9 @@ pull_script &lt;- function(page_url){
 }
 
 # run for all episodes
-seinfeld &lt;- lapply(links$full_url[1:176], pull_script) %&gt;% 
-  bind_rows() %&gt;% 
-  
+seinfeld &lt;- lapply(links$full_url, pull_script) %&gt;% 
+  bind_rows() 
+
 seinfeld &lt;- seinfeld %&gt;% 
   mutate(episode = as.numeric(episode))
 
@@ -189,7 +192,7 @@ frequency &lt;- tidy_scripts %&gt;%
   labs(y = &quot;OTHER&quot;, x = NULL)  +
   theme(legend.position = &quot;none&quot;)</code></pre>
 <p><img src="/post/2017-05-22-tidytext-analysis-of-seinfeld_files/figure-html/unnamed-chunk-7-1.png" width="979.2" /></p>
-<p>We learn that Elaine says “David” more than others, which makes sense as she dated David Puddy for number of episodes (and the rest of the gang normally called him “Puddy”). George says “Susan” more than others, and Jerry says his own name less frequently than others. Some of my favorites are Kramer’s- he uses the words “<a href="https://www.youtube.com/watch?v=aw6vye15SR0">buddy</a>”, “Cubans”, and “<a href="https://www.youtube.com/watch?v=hzHOmiV0eGU">assman</a>” more frequently than anyone else.</p>
+<p>We learn that Elaine says “David” more than others, which makes sense as she dated David Puddy for number of episodes (and the rest of the gang normally called him “Puddy”). George says “Incredible” more than others, and Jerry says his own name less frequently than others. Some of my favorites are Kramer’s- he uses the words “<a href="https://www.youtube.com/watch?v=aw6vye15SR0">buddy</a>” and “<a href="https://www.youtube.com/watch?v=hzHOmiV0eGU">assman</a>” more frequently than anyone else.</p>
 <p>We can use correlation tests to measure how similar the character’s word frequencies are. I’ve plotted the correlation, along with with a surrounding 95% interval, of each of the four leads compared with the word frequencies of all other characters combined.</p>
 <pre class="r"><code>frequency %&gt;% 
   group_by(speaker) %&gt;% 
