@@ -8,7 +8,7 @@ date = "2017-06-06"
 **Head of Reporting and Analytics**, [ActiveCare](http://www.activecare.com/)  
 June 2016 - Present
   
-  - Managed small team in charge of company reports, dashboard, various data projects
+  - Managed small team in charge of company reports, dashboard, and various data projects
   - Created and presented business intelligence analyses for company management
   - Ran internal research on medical and pharmcy claims using statistical modeling / machine learning
   - Developed internal R package
