@@ -10,7 +10,7 @@ June 2016 - Present
   
   - Managed small team in charge of company reports, dashboard, and various data projects
   - Created and presented business intelligence analyses for company management
-  - Ran internal research on medical and pharmcy claims using statistical modeling / machine learning
+  - Ran internal research on medical and pharmacy claims using statistical modeling / machine learning
   - Developed internal R package
   - Automated regular external reports using SSRS
   - One of companies SalesForce administrators
