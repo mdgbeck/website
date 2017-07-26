@@ -33,6 +33,7 @@ April 2015 - June 2016
   - **Minors:** Mathematics, Business Management
   - **GPA:** 3.44 / 4.0
   - **Relevant Courses:** Bayesian Reliability, Applied R Programming, Theory of Analysis, Regression, Quality Control and Industrial Statistics, Communication of Statistical Results
+  - **Other:** Fluent in Tagalog (Filipino)
 
 ## Skills and Achievements
 
