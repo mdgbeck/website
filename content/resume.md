@@ -11,8 +11,9 @@ June 2016 - Present
   - Managed small team in charge of company reports, dashboard, various data projects
   - Created and presented business intelligence analyses for company management
   - Ran internal research on medical and pharmcy claims using statistical modeling / machine learning
+  = Developed internal R package
   - Automated regular external reports using SSRS
-  - One of companies SalesForce Administrators
+  - One of companies SalesForce administrators
 
 **Statistician / Data Analyst** [Brigham Young University Harold B. Lee Library](https://lib.byu.edu/)  
 April 2015 - June 2016
