@@ -40,5 +40,5 @@ April 2015 - June 2016
 **Software:** R, SQL, Python (basic), C++ (basic)  
 **Tools:** Git, LaTeX, Linux, SalesForce  
 **Skills:** Web scraping, text mining, data visualization, machine learning, statistical modeling, communication to technical / general audiences  
-**Scholarships / Awards:** Academic achievement scholarship at BYU, Undergraduate recognition award in mathematics
+**Scholarships / Awards:** Academic achievement scholarship at BYU, Undergraduate recognition award in mathematics  
 **Other:** Fluent in Tagalog (Filipino)
