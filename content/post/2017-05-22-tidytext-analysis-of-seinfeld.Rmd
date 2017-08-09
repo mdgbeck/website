@@ -14,9 +14,9 @@ tags:
   - tidytext
   - analysis
 description: ''
-featured: ''
+featured: 'seinfeld_logo.png'
 featuredalt: ''
-featuredpath: ''
+featuredpath: '/img/main'
 linktitle: ''
 ---
 
