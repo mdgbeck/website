@@ -19,7 +19,7 @@ June 2016 - Present
 April 2015 - June 2016
 
   - Head statistician on large salary equity study for the Association of Research Libraries
-  - Co-author on one [published research paper](http://crl.acrl.org/index.php/crl/article/view/16639/18085), and contributer on other papers nearing completion
+  - Co-author on two [published research papers](http://crl.acrl.org/index.php/crl/article/view/16639/18085), and contributer on other papers nearing completion
   - Cleaned and analyzed large data set using a variety of statistical methods
   - Prepared thorough customized reports for 45 of the largest academic libraries in North America
   - Promoted from student research assistant to current position
