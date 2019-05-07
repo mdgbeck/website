@@ -6,7 +6,7 @@ preserveTaxonomyNames = true
 paginate = 2
 disqusShortname = "mdgbeck-netlify-com"
 googleAnalytics = "UA-99583063-1"
-ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$", "\content\post\year_tab.html"]
+ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
 
 [params]
     # Sets the meta tag description, usually reserved for the main page
